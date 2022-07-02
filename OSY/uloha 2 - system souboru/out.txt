@@ -1,0 +1,89 @@
+---FS CREATED---
+---FS CREATED---
+FS MOUNTED ( files: 0 | used sectors: 0 )
+CREATE ahoj
+	OPEN ahoj (FD 0)
+			ALLOC 4109 FOR ahoj
+		WRITE ahoj ( sector 4109, 12 bytes )
+			reading last sector before writing (12)
+		WRITE ahoj ( sector 4109, 4 bytes )
+			ALLOC 4110 FOR ahoj
+		WRITE ahoj ( sector 4110, 3 bytes )
+CREATE soubor
+	OPEN soubor (FD 1)
+			ALLOC 4111 FOR soubor
+		WRITE soubor ( sector 4111, 16 bytes )
+			ALLOC 4112 FOR soubor
+		WRITE soubor ( sector 4112, 16 bytes )
+			ALLOC 4113 FOR soubor
+		WRITE soubor ( sector 4113, 16 bytes )
+			ALLOC 4114 FOR soubor
+		WRITE soubor ( sector 4114, 16 bytes )
+			ALLOC 4115 FOR soubor
+		WRITE soubor ( sector 4115, 16 bytes )
+			ALLOC 4116 FOR soubor
+		WRITE soubor ( sector 4116, 16 bytes )
+			ALLOC 4117 FOR soubor
+		WRITE soubor ( sector 4117, 16 bytes )
+			ALLOC 4118 FOR soubor
+		WRITE soubor ( sector 4118, 16 bytes )
+			ALLOC 4119 FOR soubor
+		WRITE soubor ( sector 4119, 16 bytes )
+			ALLOC 4120 FOR soubor
+		WRITE soubor ( sector 4120, 16 bytes )
+			ALLOC 4121 FOR soubor
+		WRITE soubor ( sector 4121, 16 bytes )
+			ALLOC 4122 FOR soubor
+		WRITE soubor ( sector 4122, 16 bytes )
+			ALLOC 4123 FOR soubor
+		WRITE soubor ( sector 4123, 16 bytes )
+			ALLOC 4124 FOR soubor
+		WRITE soubor ( sector 4124, 16 bytes )
+			ALLOC 4125 FOR soubor
+		WRITE soubor ( sector 4125, 16 bytes )
+			ALLOC 4126 FOR soubor
+		WRITE soubor ( sector 4126, 16 bytes )
+			reading last sector before writing (3)
+		WRITE ahoj ( sector 4110, 3 bytes )
+	CLOSE ahoj (FD 0)
+	OPEN ahoj (FD 0)
+	CLOSE ahoj (FD 0)
+	CLOSE soubor (FD 1)
+FS UNMOUNTED
+===================================================================
+FS MOUNTED ( files: 2 | used sectors: 18 )
+	OPEN soubor (FD 0)
+	OPEN ahoj (FD 1)
+FOUND ahoj
+FOUND soubor
+		READ soubor ( sector 4111, 16 bytes )
+		READ soubor ( sector 4112, 16 bytes )
+		READ soubor ( sector 4113, 16 bytes )
+		READ soubor ( sector 4114, 16 bytes )
+		READ soubor ( sector 4115, 16 bytes )
+		READ soubor ( sector 4116, 16 bytes )
+		READ soubor ( sector 4117, 16 bytes )
+		READ soubor ( sector 4118, 16 bytes )
+		READ soubor ( sector 4119, 16 bytes )
+		READ soubor ( sector 4120, 16 bytes )
+		READ soubor ( sector 4121, 16 bytes )
+		READ soubor ( sector 4122, 16 bytes )
+		READ soubor ( sector 4123, 16 bytes )
+		READ soubor ( sector 4124, 16 bytes )
+		READ soubor ( sector 4125, 16 bytes )
+		READ soubor ( sector 4126, 16 bytes )
++---------
+|FILE: ahoj
+|SIZE: 22
+|CONTENT: ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
++---------
+		READ ahoj ( sector 4109, 16 bytes )
+		READ ahoj ( sector 4110, 6 bytes )
++---------
+|FILE: soubor
+|SIZE: 256
+|CONTENT: nemaslim si  jejda kuk
++---------
+	CLOSE soubor (FD 0)
+	CLOSE ahoj (FD 1)
+FS UNMOUNTED

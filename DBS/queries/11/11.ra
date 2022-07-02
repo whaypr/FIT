@@ -1,0 +1,13 @@
+{
+    oceneni(nazev = 'Game of the Year')[id_hra]
+    ∪
+    oceneni(nazev = 'Best Art Direction')[id_hra]
+}
+    \
+{
+    oceneni(nazev = 'Game of the Year')[id_hra]
+    ∩
+    oceneni(nazev = 'Best Art Direction')[id_hra]
+}
+    *
+hra

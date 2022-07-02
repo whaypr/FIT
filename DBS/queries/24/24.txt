@@ -1,0 +1,1 @@
+Vyber zaměstnance, kteří pracovali na více než 4 hrách, kterých zisk (výdělek - náklady) byl vyšší než 100 tisíc, a dej jim povolení k homeoffice. Zjisti, na kterých hrách pracovali. 

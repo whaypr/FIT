@@ -1,0 +1,3 @@
+{
+    vazba_hra_platforma[id_hra, id_platforma] ÷ platforma[id_platforma]
+} * hra

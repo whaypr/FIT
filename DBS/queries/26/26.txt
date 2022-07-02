@@ -1,0 +1,1 @@
+Počet pracovníků na jednotlivých pozicích zeřazených sestupně.

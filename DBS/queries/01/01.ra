@@ -1,0 +1,7 @@
+{
+    hra(nazev = 'Quake Live')
+        [hra.id_hra = vazba_hra_platforma.id_hra>
+    vazba_hra_platforma
+        [vazba_hra_platforma.id_platforma = platforma.id_platforma>
+    platforma
+}[platforma.nazev]

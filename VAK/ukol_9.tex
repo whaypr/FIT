@@ -1,0 +1,141 @@
+\documentclass{article}
+
+\usepackage{amsmath, amsthm, amssymb}
+
+\title{BI-VAK - úkol 9}
+\author{Patrik Drbal}
+
+\begin{document}
+\maketitle
+
+\textbf {\\Zadání 1 - Maximální řez\\}
+
+\begin{center}
+Vstup
+\end{center}
+Graf $G$.
+
+\begin{center}
+Výstup
+\end{center}
+Rozdělení vrcholů na množiny $A$ a $B$ takové, že počet hran mezi $A$ a $B$ je maximalizován.
+
+\textbf {\\Řešení\\}
+
+Za každý vrchol $v_i \in V(G)$ zvolíme logickou proměnnou $x_i$.
+
+Hodnota proměnné $x_i$ bude indikovat, jestli vrchol patří do komponenty $A$ ($1$), nebo do komponenty $B$ ($0$).
+
+\vspace{5mm}
+Za každou hranu $e = \{u,v\} \in E(G)$ zvolíme logickou proměnnou $y_{u,v}$.
+
+Hodnota proměnné $y_{u,v}$ bude indikovat, jestli hrana patří ($1$) do maximálního řezu, nebo nepatří ($0$).
+
+Počet proměnných $y_{u,v}$ nastavených na $1$ chceme maximalizovat.
+
+\vspace{5mm}
+\hrule\vspace{5mm}
+Nejdříve potřebujeme pro každou dvojici vrcholů $x_i$, $x_j$ zajistit, aby ve výsledném řezu nebyla hrana $y_{i,j}$, pokud jsou oba ve stejné komponentě (mají stejnou hodnotu).
+
+\vspace{5mm}
+Máme tedy
+\[ (x_i \land x_j) \implies \neg y_{i,j} \]
+pro $x_i$ a $x_j$ v komponentě $1$.
+
+A
+\[ (\neg x_i \land  \neg x_j) \implies \neg y_{i,j} \]
+pro $x_i$ a $x_j$ v komponentě $0$
+
+Dohromady dostáváme výraz
+\[ (x_i \land x_j) \vee (\neg x_i \land  \neg x_j) \implies \neg y_{i,j} \]
+
+\vspace{5mm}
+Zároveň chceme zajistit, že pokud hrana $y_{i,j}$ není vybrána do maximálního řezu, vrcholy $x_i$ a $x_j$ jsou ve stejných komponentách. Čili spolu s předchozím dostáváme následující ekvivalenci
+\[ (x_i \land x_j) \vee (\neg x_i \land  \neg x_j) \iff \neg y_{i,j} \]
+
+Nebo logicky ekvivalentně
+\[ \boxed{ y_{i,j} \iff (x_i \land \neg x_j) \vee ( \neg x_i \land x_j) } \]
+
+\vspace{5mm}
+\vspace{5mm}
+Pro použití v SAT řešiči musíme formuli převést do CNF.
+
+\vspace{5mm}
+Přepisem formule podle pravidla
+\[(a \iff b) \vdash ( (a \implies b) \wedge (b \implies a) ) \vdash ( (a \vee \neg b) \wedge (\neg a \vee b) )\]
+dostáváme
+\[
+( y_{i,j} \vee \neg ((x_i \land \neg x_j) \vee ( \neg x_i \land x_j)) )
+\wedge
+( \neg y_{i,j} \vee (x_i \land \neg x_j) \vee ( \neg x_i \land x_j) )
+\]
+
+\vspace{5mm}
+Což lze dalšími logicky ekvivalentními úpravami zjednodušit na 
+\[ \boxed{
+( y_{i,j} \vee \neg x_i \vee x_j ) \wedge
+( y_{i,j} \vee x_i \vee \neg x_j ) \wedge
+( \neg y_{i,j} \vee x_i \vee x_j ) \wedge
+( \neg y_{i,j} \vee \neg x_i \vee \neg x_j )
+} \]
+A to už je formule v konjunktivním normálním tvaru.
+
+\vspace{5mm}
+\hrule\vspace{5mm}
+
+Dále je zřejmé, že každý vrchol připojený nějakými hranami, musí alespoň jednu z těchto hran využít v maximálním řezu.
+
+To lze dokázat rozborem případů. Předpokládáme, že žádná hrana incidentní s daným vrcholem není součástí maximálního řezu (její logická proměnná má hodnotu $0$).
+
+\vspace{5mm}
+\textbf {1)}
+Vrchol je BÚNO v komponentě $1$ a všechny jeho hrany vedou do komponenty $0$.
+
+Tato situace nikdy nenastane, protože je již zakázána pravidlem, že pokud hrana spojuje vrcholy z různých komponent, musí být součástí maximálního řezu.
+
+I kdyby ale nastala, můžeme všechny incidentní hrany vybrat do maximálního řezu.
+
+\vspace{5mm}
+\textbf {2)}
+Vrchol je BÚNO v komponentě $1$ a všechny jeho hrany vedou do komponenty $1$.
+
+V této situaci můžeme vrchol přesunout do komponenty $0$ a tím problém převést na předchozí možnost.
+
+\vspace{5mm}
+\textbf {3)}
+Vrchol je BÚNO v komponentě $1$ a některé jeho hrany vedou do komponenty $1$, zatímco ostatní jeho hrany vedou do komponenty $0$.
+
+Všechny hrany vedoucí do komponenty $0$ lze prohlásit za hrany maximálního řezu.
+
+\vspace{5mm}
+\vspace{5mm}
+Tedy pro každý vrchol $x_i$ existuje alespoň jedna hrana $y_{i,j}$, která je součástí maximálního řezu (má hodnotu $1$).
+
+\vspace{5mm}
+Toto chování lze vynutit klauzulemi
+\[\boxed{ y_{i,j_1} \vee y_{i,j_2} \vee \ldots \vee  y_{i,j_n}  }\]
+pro každý vrchol $x_i$
+
+\vspace{5mm}
+\hrule\vspace{5mm}
+Protože chceme získat explicitní ohodnocení pro všechny proměnné $x_i$, přidáme SAT řešiči následující podmínku pro každou z těchto proměnných.
+Tím ho přinutíme vybrat si jednu z hodnot.
+\[\boxed{ x_i \vee \neg x_i }\]
+
+\vspace{5mm}
+\hrule\vspace{5mm}
+V této fázi již máme pomocí formulí v CNF formě definované všechny podmínky pro to, aby nám SAT řešič našel některý z řezů na zadaném grafu $G$.
+
+\vspace{5mm}
+\vspace{5mm}
+Abychom našli ten maximální, použijeme postup uvedený v přednášce a budeme si počítat TRUE proměnné.
+
+\vspace{5mm}
+Konkrétně budeme počítat počet proměnných $y_{i,j}$ ohodnocených jako $1$, čili vytvoříme pomyslnou tabulku nových proměnných $s_{k,l}$, kde $k,l \in \{1,2,...,|E(G)|\}$ podle přednášky.
+Hrany grafu $G$ si můžeme nejdříve seřadit a očíslovat, abychom mohli tabulku využít stejně jako na přednášce.
+
+\vspace{5mm}
+Dle tohoto principu dokážeme vynutit, aby se počet hran hledaného řezu rovnal konstantě $K$ a pomocí binárního půlení pomocí $O(\log |E(G)|)$ volání SAT řešiče najít i hledaný maximální řez.
+$\blacksquare$
+
+\end{document}

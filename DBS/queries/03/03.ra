@@ -1,0 +1,5 @@
+{
+    { vazba_hra_platforma * platforma }(nazev = 'PlayStation 4')[id_hra]
+        \
+    { vazba_hra_platforma * platforma }(nazev != 'PlayStation 4')[id_hra]
+} * hra

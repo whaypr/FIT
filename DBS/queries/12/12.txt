@@ -1,0 +1,1 @@
+Zaměstnanci pracující na pobočce seřazení vzestupně podle města, kde pobočka sídlí, a sestupně podle příjmení.

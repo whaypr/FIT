@@ -1,0 +1,3 @@
+dokoncena(datum_vydani >= '1.1.2015' ∧ datum_vydani <= '31.12.2015')
+*
+hra

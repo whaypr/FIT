@@ -1,0 +1,5 @@
+{
+    zamestnanec
+        [zamestnanec.id_pobocka = pobocka.id_pobocka]
+    pobocka(id_pobocka = 1)
+}[jmeno, prijmeni]

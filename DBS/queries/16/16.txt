@@ -1,0 +1,1 @@
+Všechny žánry, ve kterých je 3 a více her, jejichž zisk byl vyšší než 1 000 000 Kč. U každé kategorie je k dispozici konkrétní počet her splňujících kritérium. Seřazeno sestupně.

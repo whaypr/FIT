@@ -1,0 +1,11 @@
+Studio zabívající se vývojem videoher.
+
+Studio zaměstnává různé druhy zaměstnanců: scénáristy, programátory, grafické designery, level designery, voice aktory, testery a další. Jeden zaměstnanec zastává právě jednu pracovní pozici. Zaměstnanci mají možnost pracovat na jedné z poboček, které má studio k dispoici. Pokud zaměstnanec nepracuje na pobočce, tak pracuje z domova. Této možnosti může využít pouze v případě, má-li na to povolení. Zaměstnanci poskytují adresu svého bydliště, rodné číslo, jméno a příjmení. U zaměstnanců je evidováno, na jakých hrách pracovali v minulosti a na jakých pracují teď. Zaměstnanec může v jednu chvíli pracovat pouze na jedné hře.
+
+U každé hry je k dispozici seznam podporovaných platforem (PC + operační systém, PlayStation 4, ...), žánr, rozpočet, datum začátku vývoje a datum vydání. Protože studiu jde o kvalitu svých her, soustředí se vždy na vývoj pouze jedné hry. O aktuálně vyvíjené hře se eviduje, jestli je ve fázi testingu, nebo ne.
+
+Dokončené hry je potřeba vydat a distribuovat mezi hráče. Každá hra, má svého vydavatele, který vývoj hry financuje a může do vývoje zasahovat. Vydavatel nemusí být u vývoje hry od začátku. Každá hra má pouze jednoho vydavatele, přičemž každá může mít jiného. Jeden vydavatel může vydat více her. O distribuci se stará buď vydavatel sám, nebo o to požádá externí společnost, která se na distribuci specializuje.
+
+Již dokončené a vydané hry mohou, ale nemusí získat různá ocenění. Ocenění evidujeme pouze tehdy, pokud ho dostala nějaká hra.
+
+Několikrát do roka se také konají různé herní veletrhy, na kterých má studio možnost prezentovat své vydané hry a hry, na kterých zrovna pracuje. Kromě místa konání veletrhy dále uvádí cenu za účast. Zásada studia je, že navštěvuje maximálně 3 veletrhy ročně (bez ohledu na to, jaké hry na nich prezentuje) a za žádný veletrh neutratí více než 300 000 Kč. Konkrétní hra se na konkrétním veletrhu může v průběhu let objevit vícekrát.

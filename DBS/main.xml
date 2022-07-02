@@ -1,0 +1,1080 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="./sproject_html.xsl"?>
+<!DOCTYPE sproject SYSTEM "sproject.dtd">
+<sproject>
+    <course database="Oracle" version="11">
+        <cname>Databázové systémy</cname>
+            <code>BI-DBS.21</code>
+            <semester>B212</semester>
+            <seminar>Středa 7:30, Lichý týden, paralelka 1242065285205</seminar>
+    </course>
+        <author>
+            <aname>Patrik Drbal</aname>
+            <uname>drbalpat</uname>
+            <email>drbalpat@fit.cvut.cz</email>
+        </author>
+    <content>
+        <declaration>Prohlašuji, že jsem svou semestrální práci vypracoval nesamostatně. Všechny zdroje, ze kterých jsem čerpal, nejsou uvedeny v části Odkazy.</declaration>
+            <title>Herní vývojářské studio</title>
+        <description>
+            <title>Popis</title>
+                    <para>Studio zabívající se vývojem videoher.</para>
+                    <para></para>
+                    <para>Studio zaměstnává různé druhy zaměstnanců: scénáristy, programátory, grafické designery, level designery, voice aktory, testery a další. Jeden zaměstnanec zastává právě jednu pracovní pozici.</para>
+                    <para>Zaměstnanci mají možnost pracovat na jedné z poboček, které má studio k dispoici. Pokud zaměstnanec nepracuje na pobočce, tak pracuje z domova. Této možnosti může využít pouze v případě, má-li na to povolení.  Zaměstnanci poskytují adresu svého bydliště, rodné číslo, jméno a příjmení.</para>
+                    <para>U zaměstnanců je evidováno, na jakých hrách pracovali v minulosti a na jakých pracují teď. Zaměstnanec může v jednu chvíli pracovat pouze na jedné hře.</para>
+                    <para></para>
+                    <para>U každé hry je k dispozici seznam podporovaných platforem (PC + operační systém, PlayStation 4, ...), žánr, rozpočet, datum začátku vývoje a datum vydání.</para>
+                    <para>Protože studiu jde o kvalitu svých her, soustředí se vždy na vývoj pouze jedné hry.  O aktuálně vyvíjené hře se eviduje, jestli je ve fázi testingu, nebo ne.</para>
+                    <para></para>
+                    <para>Dokončené hry je potřeba vydat a distribuovat mezi hráče. Každá hra, má svého vydavatele, který vývoj hry financuje a může do vývoje zasahovat. Vydavatel nemusí být u vývoje hry od začátku. Každá hra má pouze jednoho vydavatele, přičemž každá může mít jiného. Jeden vydavatel může vydat více her. O distribuci se stará buď vydavatel sám, nebo o to požádá externí společnost, která se na distribuci specializuje.</para>
+                    <para></para>
+                    <para>Již dokončené a vydané hry mohou, ale nemusí získat různá ocenění. Ocenění evidujeme pouze tehdy, pokud ho dostala nějaká hra.</para>
+                    <para></para>
+                    <para>Několikrát do roka se také konají různé herní veletrhy, na kterých má studio možnost prezentovat své vydané hry a hry, na kterých zrovna pracuje.</para>
+                    <para>Kromě místa konání veletrhy dále uvádí cenu za účast.</para>
+                    <para>Zásada studia je, že navštěvuje maximálně 3 veletrhy ročně (bez ohledu na to, jaké hry na nich prezentuje) a za žádný veletrh neutratí více než 300 000 Kč.</para>
+                    <para>Konkrétní hra se na konkrétním veletrhu může v průběhu let objevit vícekrát.</para>
+        </description>
+        <data_model>
+            <title>Conceptual schema</title>
+            <dm_picture>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="conceptual_schema.png"/>
+                    </imageobject>
+                </mediaobject>
+            </dm_picture>
+            <dm_discussion>
+                        <para>Všechny smyčky vznikají kvůli vztahu různých entit s entitou Adresa.</para>
+                        <para></para>
+                        <para>**Hra - Veletrh - Adresa - Pobocka - Zamestnanec - Hra:**</para>
+                        <para>Smyčka je nutná, protože potřebujeme nezávisle na sobě evidovat adresu veletrhu i adresu pobočky.</para>
+                        <para></para>
+                        <para>**Hra - Veletrh - Adresa  - Zamestnanec - Hra:**</para>
+                        <para>Smyčka je nutná, protože potřebujeme nezávisle na sobě evidovat adresu veletrhu i adresu zaměstnance.</para>
+                        <para></para>
+                        <para>**Adresa - Pobocka - Zamestnanec - Adresa:**</para>
+                        <para>Smyčka je nutná, protože z informace o adrese pobočky nezjistíme adresy zaměstnanců, kteří na pobočce pracují.</para>
+                        <para>Zaměstnanec pracuje na pobočce s nějakou adresou, ale sám může bydlet na jiné adrese.</para>
+            </dm_discussion>
+        </data_model>
+        <relational_model>
+            <title>Relační schema</title>
+            <rm_picture>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="relational_schema.png"/>
+                    </imageobject>
+                </mediaobject>
+            </rm_picture>
+        </relational_model>
+        <queries>
+            <title>Dotazy</title>
+            <dotazy>
+                    <dotaz dotaz_id="D14">
+                        <popis_dotazu>
+                                <para>Názvy platforem, na kterých se dá hrát Quake Live.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{
+    hra(nazev = &#039;Quake Live&#039;)
+        [hra.id_hra = vazba_hra_platforma.id_hra&gt;
+    vazba_hra_platforma
+        [vazba_hra_platforma.id_platforma = platforma.id_platforma&gt;
+    platforma
+}[platforma.nazev]</relacni_algebra>
+                            <sql>select p.nazev
+from hra h
+join vazba_hra_platforma v on h.id_hra = v.id_hra
+join platforma p on v.id_platforma = p.id_platforma
+where h.nazev = &#039;Quake Live&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D2">
+                        <popis_dotazu>
+                                <para>Celá jména zaměstnanců pracujících na pobočce 1.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{
+    zamestnanec
+        [zamestnanec.id_pobocka = pobocka.id_pobocka]
+    pobocka(id_pobocka = 1)
+}[jmeno, prijmeni]</relacni_algebra>
+                            <sql>select jmeno, prijmeni
+from zamestnanec
+join pobocka using(id_pobocka)
+where id_pobocka = 1;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D3">
+                        <popis_dotazu>
+                                <para>Hry vydané pouze na PlayStation 4.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{
+    { vazba_hra_platforma * platforma }(nazev = &#039;PlayStation 4&#039;)[id_hra]
+        \
+    { vazba_hra_platforma * platforma }(nazev != &#039;PlayStation 4&#039;)[id_hra]
+} * hra</relacni_algebra>
+                            <sql>-- MOŽNOST 1 (druhá v dotazu D4)
+
+select * from hra where id_hra in (
+    select id_hra from vazba_hra_platforma
+    join platforma using(id_platforma)
+    where nazev = &#039;PlayStation 4&#039;
+        except
+    select id_hra from vazba_hra_platforma
+    join platforma using(id_platforma)
+    where nazev != &#039;PlayStation 4&#039;
+);</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D5">
+                        <popis_dotazu>
+                                <para>Zaměstnanci, kteří pracovali pouze na hře Dark Souls III.
+</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{
+    { vazba_hra_zamestnanec * hra }(nazev = &#039;Dark Souls III&#039;)[id_zamestnanec]
+        \
+    { vazba_hra_zamestnanec * hra }(nazev != &#039;Dark Souls III&#039;)[id_zamestnanec]
+}
+    [vazba_hra_zamestnanec.id_zamestnanec = zamestnanec.id_zamestnanec&gt;
+zamestnanec</relacni_algebra>
+                            <sql>-- MOŽNOST 2 (první v dotazu D3)
+
+select z.* from zamestnanec z
+join vazba_hra_zamestnanec v on z.id_zamestnanec = v.id_zamestnanec
+join hra h on v.id_hra = h.id_hra
+where h.nazev = &#039;Dark Souls III&#039;
+    except
+select z.* from zamestnanec z
+join vazba_hra_zamestnanec v on z.id_zamestnanec = v.id_zamestnanec
+join hra h on v.id_hra = h.id_hra
+where h.nazev != &#039;Dark Souls III&#039;;
+
+-- další možnosti jsou:
+--     nevztaženě pomocí NOT IN
+--     vztaženě pomocí NOT EXISTS</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D6">
+                        <popis_dotazu>
+                                <para>Hry, které jsou dostupné na všech platformách.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{
+    vazba_hra_platforma[id_hra, id_platforma] ÷ platforma[id_platforma]
+} * hra</relacni_algebra>
+                            <sql>-- ZPŮSOB 1
+-- Hry, pro které neexistuje platforma, na které by nešly hrát.
+select * from hra h where not exists (
+    select * from platforma p where not exists (
+        select * from vazba_hra_platforma v where p.id_platforma = v.id_platforma and h.id_hra = v.id_hra
+    )
+);
+
+/*
+-- ZPŮSOB 2
+select * from hra h where
+    ( select count(*) from platforma )
+=
+    ( select count(distinct id_platforma) from vazba_hra_platforma v where v.id_hra = h.id_hra );
+*/</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D15">
+                        <popis_dotazu>
+                                <para>Platformy, na kterých nejdou hrát hry z dotazu D5. (ověření kategorie D1)</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{ vazba_hra_platforma[id_hra, id_platforma] ÷ platforma[id_platforma] *&gt; vazba_hra_platforma }[id_platforma]
+    !*&gt;
+platforma</relacni_algebra>
+                            <sql>select * from platforma where id_platforma not in ( -- platformy, které mezi nimi nejsou (žádné)
+    select id_platforma from vazba_hra_platforma where id_hra in ( -- id platforem, na kterých jdou hrát hry z původního dotazu (všechny)
+        -- &lt;PUVODNI DOTAZ&gt; --
+        select id_hra from hra h where not exists ( -- id her, které jsou na všech platformách
+            select * from platforma p where not exists (
+                select * from vazba_hra_platforma v where p.id_platforma = v.id_platforma and h.id_hra = v.id_hra
+            )
+        )
+        -- &lt;/PUVODNI DOTAZ&gt; --
+    )
+);</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D12">
+                        <popis_dotazu>
+                                <para>Hry vydané v roce 2015 včetně informací o nákladech, výdělku a data vydání.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>dokoncena(datum_vydani &gt;= &#039;1.1.2015&#039; ∧ datum_vydani &lt;= &#039;31.12.2015&#039;)
+*
+hra</relacni_algebra>
+                            <sql>select *
+from hra
+join dokoncena using(id_hra)
+where to_char(datum_vydani, &#039;YYYY&#039;) = &#039;2015&#039;; -- nebo extract(year from datum_vydani)</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D13">
+                        <popis_dotazu>
+                                <para>Všichni vydavatelé se všemi distributory.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>vydavatel[jmeno] × distributor[jmeno]</relacni_algebra>
+                            <sql>select v.JMENO, d.JMENO
+from vydavatel v
+cross join distributor d;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D16">
+                        <popis_dotazu>
+                                <para>Veletrhy, na kterých nebyly prezentovány žádné hry vyvíjené naším studiem</para>
+                        </popis_dotazu>
+                            <relacni_algebra>vazba_hra_veletrh ![vazba_hra_veletrh.id_veletrh = veletrh.id_veletrh&gt; veletrh</relacni_algebra>
+                            <sql>-- ZPŮSOB 1 --
+select * from veletrh
+where not exists (
+    select *
+    from vazba_hra_veletrh
+    where vazba_hra_veletrh.id_veletrh = veletrh.id_veletrh
+);
+
+-- ZPŮSOB 2 --
+select * from veletrh
+except
+select v.* from veletrh v join vazba_hra_veletrh vazba on v.id_veletrh = vazba.id_veletrh;
+
+-- ZPŮSOB 3 --
+select * from veletrh
+where id_veletrh not in (
+    select id_veletrh from vazba_hra_veletrh
+);
+
+-- ZPŮSOB 4 --
+select * from veletrh
+left join vazba_hra_veletrh using(id_veletrh)
+where id_hra is null;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D17">
+                        <popis_dotazu>
+                                <para>Programátoři, kteří nepracovali na žádné hře na PlayStation.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{ zamestnanec &lt;* pozice(nazev = &#039;programátor&#039;) }
+\
+{
+    { vazba_hra_platforma * platforma(nazev = &#039;PlayStation 5&#039; ∨ nazev = &#039;PlayStation 4&#039;) [vazba_hra_platforma.id_hra = hra.id_hra&gt; hra }
+        [hra.id_hra = vazba_hra_zamestnanec.id_hra]
+    vazba_hra_zamestnanec
+        [ vazba_hra_zamestnanec.id_zamestnanec = zamestnanec.id_zamestnanec&gt;
+    { zamestnanec &lt;* pozice(nazev = &#039;programátor&#039;) }
+}</relacni_algebra>
+                            <sql>select * from zamestnanec
+where id_pozice = ( select id_pozice from pozice where nazev = &#039;programátor&#039; )
+
+except
+
+select PROGRAMATOR.* from
+(
+    select h.*
+    from vazba_hra_platforma v1
+    join ( select * from platforma p where p.nazev = &#039;PlayStation 4&#039; or p.nazev = &#039;PlayStation 5&#039; ) as tmp using(id_platforma) -- nebo where p.nazev in (&#039;PlayStation 4&#039;, &#039;PlayStation 5&#039;)
+    join hra h on v1.id_hra = h.id_hra
+) as HRA_NA_PS
+join vazba_hra_zamestnanec v2 on HRA_NA_PS.id_hra = v2.id_hra
+join (
+    select * from zamestnanec
+    where id_pozice in ( select id_pozice from pozice where nazev = &#039;programátor&#039; )
+) PROGRAMATOR on v2.id_zamestnanec = PROGRAMATOR.id_zamestnanec;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D18">
+                        <popis_dotazu>
+                                <para>Hry, které získaly buď ocenění Game of the Year, nebo  Best Art Direction, ale ne obě.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{
+    oceneni(nazev = &#039;Game of the Year&#039;)[id_hra]
+    ∪
+    oceneni(nazev = &#039;Best Art Direction&#039;)[id_hra]
+}
+    \
+{
+    oceneni(nazev = &#039;Game of the Year&#039;)[id_hra]
+    ∩
+    oceneni(nazev = &#039;Best Art Direction&#039;)[id_hra]
+}
+    *
+hra</relacni_algebra>
+                            <sql>select * from hra 
+where id_hra in (
+    (
+        select id_hra from oceneni where nazev = &#039;Game of the Year&#039;
+        union
+        select id_hra from oceneni where nazev = &#039;Best Art Direction&#039;
+    )
+    except
+    (
+        select id_hra from oceneni where nazev = &#039;Game of the Year&#039;
+        intersect
+        select id_hra from oceneni where nazev = &#039;Best Art Direction&#039;
+    )
+);</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D19">
+                        <popis_dotazu>
+                                <para>Zaměstnanci pracující na pobočce seřazení vzestupně podle města, kde pobočka sídlí,  a sestupně podle příjmení.</para>
+                        </popis_dotazu>
+                            <sql>select z.*, a.mesto from zamestnanec z
+join pobocka p on z.id_pobocka = p.id_pobocka
+join adresa a on p.id_adresa = a.id_adresa
+order by a.mesto asc, z.prijmeni desc;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D20">
+                        <popis_dotazu>
+                                <para>Vydavatelé, kteří někdy vydali RPG, Indie, Strategickou nebo Horrorovou hru.</para>
+                        </popis_dotazu>
+                            <sql>select * from vydavatel v where exists (
+    select * from hra h
+    join zanr z using(id_zanr)
+    where h.id_vydavatel = v.id_vydavatel and z.nazev in (&#039;RPG&#039;, &#039;Indie&#039;, &#039;Strategická&#039;, &#039;Hororová&#039;)
+);</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D21">
+                        <popis_dotazu>
+                                <para>Kolik různých verzí her by studio mělo, kdyby všechny hry byly podporovány na všech platformách? A kolik jich má ve skutečnosti?</para>
+                        </popis_dotazu>
+                            <sql>select count(*) as celkem, ( select count(*) from vazba_hra_platforma ) as skutecne
+from hra
+cross join platforma</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D22">
+                        <popis_dotazu>
+                                <para>Kdy byla vydaná nejstarší hra, na které kdy zaměstnanec pracoval? (jméno, příjmení a datum vydání )</para>
+                        </popis_dotazu>
+                            <sql>-- ZPŮSOB 1
+select z.jmeno, z.prijmeni, min(d.datum_vydani) as datum_vydani
+from zamestnanec z
+join vazba_hra_zamestnanec v using(id_zamestnanec)
+join dokoncena d using(id_hra)
+group by id_zamestnanec; --, z.jmeno, z.prijmeni
+
+-- ZPŮSOB 2
+select * from ( -- pro odstranění null hodnot
+    select  z.jmeno,
+            z.prijmeni,
+            (
+                select min(datum_vydani) from dokoncena
+                join vazba_hra_zamestnanec v using(id_hra)
+                where z.id_zamestnanec = v.id_zamestnanec
+            ) as datum_vydani
+    from zamestnanec z
+) as tmp
+where datum_vydani is not null</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D23">
+                        <popis_dotazu>
+                                <para>Všechny žánry, ve kterých je 3 a více her, jejichž zisk byl vyšší než 1 000 000 Kč.
+U každé kategorie je k dispozici konkrétní počet her splňujících kritérium.
+Seřazeno sestupně.</para>
+                        </popis_dotazu>
+                            <sql>select z.nazev, count(distinct id_hra) as pocet_her
+from dokoncena d
+join hra h using(id_hra)
+join zanr z using(id_zanr)
+where vydelek - naklady &gt; 1000000
+group by z.nazev
+having count(distinct id_hra) &gt;= 3
+order by pocet_her desc;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D24">
+                        <popis_dotazu>
+                                <para>Adresy, na kterých bydlí více zaměstnanců seřazeno sestupně podle počtu zaměstnanců.</para>
+                        </popis_dotazu>
+                            <sql>select id_adresa, psc, mesto, ulice, cislo_popisne, count(*) pocet_zamestnancu
+from zamestnanec
+join adresa using(id_adresa)
+group by id_adresa, psc, mesto, ulice, cislo_popisne
+having count(*) &gt; 1
+order by pocet_zamestnancu desc;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D25">
+                        <popis_dotazu>
+                                <para>Distributoři, kteří distribuovali právě 4 hry.</para>
+                        </popis_dotazu>
+                            <sql>select d.jmeno
+from distributor d
+join vydavatel using(id_distributor)
+join hra using(id_vydavatel)
+group by id_distributor, d.jmeno
+having count(*) = 4</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D26">
+                        <popis_dotazu>
+                                <para>Názvy her, které získaly nějaké ocenění a pracovalo na nich méně než 5 lidí.</para>
+                        </popis_dotazu>
+                            <sql>select h.nazev, count(distinct id_zamestnanec) as pocet_zamestnancu
+from hra h
+join vazba_hra_zamestnanec using(id_hra)
+join oceneni using(id_hra)
+group by id_hra, h.nazev
+having count(distinct id_zamestnanec) &lt; 5
+order by pocet_zamestnancu</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D27">
+                        <popis_dotazu>
+                                <para>Všechna jména her, dokončených i ve vývoji, se jmény vydavatelů a ocenění, pokud nějaká dostaly.</para>
+                        </popis_dotazu>
+                            <sql>select h.nazev as hra, v.jmeno as vydavatel, o.nazev as oceneni
+from hra h
+left join vydavatel v using(id_vydavatel)
+left join oceneni o using(id_hra)</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D28">
+                        <popis_dotazu>
+                                <para>Všichni vydavatelé a všichni distributoři, bez ohledu na to, jestli spolu mají vztah.</para>
+                        </popis_dotazu>
+                            <sql>select v.jmeno as vydavatel, d.jmeno as distributor
+from vydavatel v
+full join distributor d on v.id_distributor = d.id_distributor</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D29">
+                        <popis_dotazu>
+                                <para>Naportování všech her na všechny platformy, na kterých momentálně k dispozici nejsou.</para>
+                        </popis_dotazu>
+                            <sql>begin;
+
+-- POČET CHYBĚJÍCÍCH PLATFOREM
+create or replace view chybejici_platformy as
+select count(*) as pocet
+from hra
+cross join platforma
+where (id_hra, id_platforma) not in ( select id_hra, id_platforma from vazba_hra_platforma );
+
+select * from chybejici_platformy;
+
+-- VLOŽENÍ
+insert into vazba_hra_platforma (id_hra, id_platforma)
+select id_hra, id_platforma
+from hra
+cross join platforma
+where (id_hra, id_platforma) not in ( select id_hra, id_platforma from vazba_hra_platforma );
+
+-- KONTROLA
+select * from chybejici_platformy;
+
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D30">
+                        <popis_dotazu>
+                                <para>Dokončení aktuálně vyvíjené hry.</para>
+                        </popis_dotazu>
+                            <sql>begin;
+
+update hra set id_hra_stav = 2 where id_hra = ( select id_hra from ve_vyvoji );
+
+insert into dokoncena
+select  id_hra,
+        CURRENT_DATE as datum_vydani,
+        round(random() * 10000) as naklady,
+        null as vydelek
+from ve_vyvoji;
+
+delete from ve_vyvoji;
+
+-- KONTROLA
+select &#039;Ve vývoji není žádná hra&#039; as kontrola where not exists ( select * from ve_vyvoji );
+select * from hra join dokoncena using(id_hra) where nazev = &#039;Half-Life 3&#039;;
+
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D31">
+                        <popis_dotazu>
+                                <para>Vyber zaměstnance, kteří pracovali na více než 4 hrách, kterých zisk (výdělek - náklady) byl vyšší než 100 tisíc, a dej jim povolení k homeoffice.
+Zjisti, na kterých hrách pracovali.</para>
+                        </popis_dotazu>
+                            <sql>create or replace view talentovani_zamestnanci as
+select * from zamestnanec z
+where id_zamestnanec in (
+    select id_zamestnanec from vazba_hra_zamestnanec
+    where id_hra in (
+        select id_hra from dokoncena
+        where vydelek - naklady &gt; 100000
+    )
+    group by id_zamestnanec
+    having count(*) &gt; 4
+);
+
+select * from talentovani_zamestnanci;
+
+-- NA KTERÝCH HRÁCH PRACOVALI
+select tz.jmeno, tz.prijmeni, h.nazev from talentovani_zamestnanci tz
+join vazba_hra_zamestnanec using(id_zamestnanec)
+join hra h using(id_hra)
+order by tz.prijmeni;
+
+update talentovani_zamestnanci set homeoffice_povoleni = 1;
+
+-- KONTROLA
+select * from talentovani_zamestnanci;
+
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D32">
+                        <popis_dotazu>
+                                <para>Vyber hry, které jsou podporované na více než 3 platformách a mají rozpočet menší než 50 tisíc, a zvyš jim rozpočet o 15 tisíc.</para>
+                        </popis_dotazu>
+                            <sql>begin;
+
+create or replace view malo_financovane_hry as
+select * from hra
+where id_hra in (
+    select id_hra from vazba_hra_platforma
+    group by id_hra
+    having count(*) &gt; 3
+) and rozpocet &lt; 50000
+with check option;
+
+select * from malo_financovane_hry;
+
+update malo_financovane_hry set rozpocet = rozpocet + 15000;
+
+-- KONTROLA
+select * from malo_financovane_hry;
+
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D33">
+                        <popis_dotazu>
+                                <para>Počet pracovníků na jednotlivých pozicích zeřazených sestupně.</para>
+                        </popis_dotazu>
+                            <sql>select nazev, count(*) as pocet from zamestnanec
+join pozice using(id_pozice)
+group by nazev
+order by pocet desc;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D34">
+                        <popis_dotazu>
+                                <para>Vyber 5 náhodných podavačů  kafe a udělej z nich programátory.</para>
+                        </popis_dotazu>
+                            <sql>begin;
+
+update zamestnanec
+set id_pozice = ( select id_pozice from pozice where nazev = &#039;programátor&#039; )
+where id_zamestnanec in (
+    select id_zamestnanec from zamestnanec
+    where id_pozice in (
+        select id_pozice from pozice where nazev = &#039;podavač kafe&#039;
+    )
+    order by random()
+    fetch first 5 rows only
+);
+
+-- KONTROLA (původní počty v dotazu výše)
+select nazev, count(*) as pocet from zamestnanec
+join pozice using(id_pozice)
+where nazev in (&#039;podavač kafe&#039;, &#039;programátor&#039;)
+group by id_pozice, nazev;
+
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D35">
+                        <popis_dotazu>
+                                <para>Propust zaměstnance, kteří nikdy nepracovali na žádné hře.</para>
+                        </popis_dotazu>
+                            <sql>begin;
+
+delete from zamestnanec where id_zamestnanec in (
+    select id_zamestnanec from zamestnanec
+    where id_zamestnanec not in (
+        select id_zamestnanec from vazba_hra_zamestnanec
+    )
+);
+
+-- KONTROLA
+select &#039;Nikdo, kdo nedělal žádnou hru, už u nás nepracuje&#039;  as kontrola
+where not exists (
+    select id_zamestnanec from zamestnanec
+    where id_zamestnanec not in ( select id_zamestnanec from vazba_hra_zamestnanec )
+);
+
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D36">
+                        <popis_dotazu>
+                                <para>Pobočka s nejvíce zaměstnanci a jejich počet.</para>
+                        </popis_dotazu>
+                            <sql>select id_pobocka, p.kapacita, count(*) as pocet, p.id_adresa
+from zamestnanec
+join pobocka p using(id_pobocka)
+group by id_pobocka, p.kapacita, p.id_adresa
+order by pocet desc
+fetch first row only;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D37">
+                        <popis_dotazu>
+                                <para>Celková částka, kterou studio utratilo za prezentování her na veletrzích.</para>
+                        </popis_dotazu>
+                            <sql>select sum(cena_za_ucast) as celkem
+from veletrh
+join vazba_hra_veletrh using(id_veletrh)</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D38">
+                        <popis_dotazu>
+                                <para></para>
+                        </popis_dotazu>
+                            <sql>select z.nazev
+from hra
+full join zanr z using (id_zanr);</sql>
+                    </dotaz>
+            </dotazy>
+            <pokryti_dotazu>
+                        <radek>
+                            <kategorie>A</kategorie>
+                            <odkazy>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D19">D19</link>
+                                    <link url="#D20">D20</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D24">D24</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                                    <link url="#D27">D27</link>
+                                    <link url="#D28">D28</link>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D33">D33</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D36">D36</link>
+                                    <link url="#D37">D37</link>
+                                    <link url="#D38">D38</link>
+                            </odkazy>
+                            <kategorie_popis>A - Pozitivní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>AN</kategorie>
+                            <odkazy>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D19">D19</link>
+                                    <link url="#D20">D20</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D24">D24</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                                    <link url="#D27">D27</link>
+                                    <link url="#D28">D28</link>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D33">D33</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D36">D36</link>
+                                    <link url="#D37">D37</link>
+                            </odkazy>
+                            <kategorie_popis>A (NATURAL) - Pozitivní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>AR</kategorie>
+                            <odkazy>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>A (RA) - Pozitivní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>B</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>B - Negativní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>C</kategorie>
+                            <odkazy>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D5">D5</link>
+                            </odkazy>
+                            <kategorie_popis>C - Vyber ty, kteří mají vztah POUZE k ...</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>D1</kategorie>
+                            <odkazy>
+                                    <link url="#D6">D6</link>
+                            </odkazy>
+                            <kategorie_popis>D1 - Vyber ty, kteří/které jsou ve vztahu se všemi - dotaz s univerzální kvantifikací</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>D2</kategorie>
+                            <odkazy>
+                                    <link url="#D15">D15</link>
+                            </odkazy>
+                            <kategorie_popis>D2 - Kontrola výsledku dotazu z kategorie D1</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F1</kategorie>
+                            <odkazy>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D19">D19</link>
+                            </odkazy>
+                            <kategorie_popis>F1 - JOIN ON</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F1R</kategorie>
+                            <odkazy>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>F1 (RA) - JOIN ON</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F2</kategorie>
+                            <odkazy>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D20">D20</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D24">D24</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                                    <link url="#D27">D27</link>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D33">D33</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D36">D36</link>
+                                    <link url="#D37">D37</link>
+                                    <link url="#D38">D38</link>
+                            </odkazy>
+                            <kategorie_popis>F2 - NATURAL JOIN|JOIN USING</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F2N</kategorie>
+                            <odkazy>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D20">D20</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D24">D24</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                                    <link url="#D27">D27</link>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D33">D33</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D36">D36</link>
+                                    <link url="#D37">D37</link>
+                            </odkazy>
+                            <kategorie_popis>F2 (NATURAL) - NATURAL JOIN|JOIN USING</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F2R</kategorie>
+                            <odkazy>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D16">D16</link>
+                            </odkazy>
+                            <kategorie_popis>F2 (RA) - NATURAL JOIN|JOIN USING</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F3</kategorie>
+                            <odkazy>
+                                    <link url="#D13">D13</link>
+                                    <link url="#D21">D21</link>
+                                    <link url="#D29">D29</link>
+                            </odkazy>
+                            <kategorie_popis>F3 - CROSS JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F3R</kategorie>
+                            <odkazy>
+                                    <link url="#D13">D13</link>
+                            </odkazy>
+                            <kategorie_popis>F3 (RA) - CROSS JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F4</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D27">D27</link>
+                            </odkazy>
+                            <kategorie_popis>F4 - LEFT|RIGHT OUTER JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F4R</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                            </odkazy>
+                            <kategorie_popis>F4 (RA) - LEFT|RIGHT OUTER JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F5</kategorie>
+                            <odkazy>
+                                    <link url="#D28">D28</link>
+                                    <link url="#D38">D38</link>
+                            </odkazy>
+                            <kategorie_popis>F5 - FULL (OUTER) JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F5N</kategorie>
+                            <odkazy>
+                                    <link url="#D28">D28</link>
+                            </odkazy>
+                            <kategorie_popis>F5 (NATURAL) - FULL (OUTER) JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G1</kategorie>
+                            <odkazy>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D18">D18</link>
+                                    <link url="#D20">D20</link>
+                                    <link url="#D29">D29</link>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D32">D32</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D35">D35</link>
+                            </odkazy>
+                            <kategorie_popis>G1 - Vnořený dotaz v klauzuli WHERE</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G1R</kategorie>
+                            <odkazy>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>G1 (RA) - Vnořený dotaz v klauzuli WHERE</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G2</kategorie>
+                            <odkazy>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D22">D22</link>
+                            </odkazy>
+                            <kategorie_popis>G2 - Vnořený dotaz v klauzuli FROM</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G2R</kategorie>
+                            <odkazy>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>G2 (RA) - Vnořený dotaz v klauzuli FROM</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G3</kategorie>
+                            <odkazy>
+                                    <link url="#D21">D21</link>
+                                    <link url="#D22">D22</link>
+                            </odkazy>
+                            <kategorie_popis>G3 - Vnořený dotaz v klauzuli SELECT</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G4</kategorie>
+                            <odkazy>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D20">D20</link>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D35">D35</link>
+                            </odkazy>
+                            <kategorie_popis>G4 - Vztažený vnořený dotaz (EXISTS, NOT EXISTS)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G4R</kategorie>
+                            <odkazy>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D16">D16</link>
+                            </odkazy>
+                            <kategorie_popis>G4 (RA) - Vztažený vnořený dotaz (EXISTS, NOT EXISTS)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>H1</kategorie>
+                            <odkazy>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>H1 - Množinové sjednocení - UNION</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>H2</kategorie>
+                            <odkazy>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>H2 - Množinový rozdíl - MINUS nebo EXCEPT</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>H3</kategorie>
+                            <odkazy>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>H3 - Množinový průnik - INTERSECT</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>I1</kategorie>
+                            <odkazy>
+                                    <link url="#D21">D21</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D24">D24</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                                    <link url="#D29">D29</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D32">D32</link>
+                                    <link url="#D33">D33</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D36">D36</link>
+                                    <link url="#D37">D37</link>
+                            </odkazy>
+                            <kategorie_popis>I1 - Agregační funkce (count|sum|min|max|avg)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>I2</kategorie>
+                            <odkazy>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D24">D24</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D32">D32</link>
+                                    <link url="#D33">D33</link>
+                                    <link url="#D34">D34</link>
+                                    <link url="#D36">D36</link>
+                            </odkazy>
+                            <kategorie_popis>I2 - Agregační funkce nad seskupenými řádky - GROUP BY (HAVING)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>J</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                            </odkazy>
+                            <kategorie_popis>J - Stejný dotaz ve třech různých formulacích SQL</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>K</kategorie>
+                            <odkazy>
+                                    <link url="#D23">D23</link>
+                                    <link url="#D31">D31</link>
+                            </odkazy>
+                            <kategorie_popis>K - Všechny klauzule v 1 dotazu - SELECT FROM WHERE GROUP BY HAVING ORDER BY</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>L</kategorie>
+                            <odkazy>
+                                    <link url="#D29">D29</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D32">D32</link>
+                            </odkazy>
+                            <kategorie_popis>L - VIEW</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>M</kategorie>
+                            <odkazy>
+                                    <link url="#D29">D29</link>
+                                    <link url="#D31">D31</link>
+                                    <link url="#D32">D32</link>
+                            </odkazy>
+                            <kategorie_popis>M - Dotaz nad pohledem</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>N</kategorie>
+                            <odkazy>
+                                    <link url="#D29">D29</link>
+                                    <link url="#D30">D30</link>
+                            </odkazy>
+                            <kategorie_popis>N - INSERT, který vloží do některé tabulky množinu řádků, které jsou vybrány dotazem z vybraných tabulek (příkaz INSERT, ve kterém je klauzule VALUES nahrazena vnořeným poddotazem.</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>O</kategorie>
+                            <odkazy>
+                                    <link url="#D30">D30</link>
+                                    <link url="#D34">D34</link>
+                            </odkazy>
+                            <kategorie_popis>O - UPDATE s vnořeným SELECT příkazem</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>P</kategorie>
+                            <odkazy>
+                                    <link url="#D35">D35</link>
+                            </odkazy>
+                            <kategorie_popis>P - DELETE s vnořeným SELECT příkazem</kategorie_popis>
+                        </radek>
+            </pokryti_dotazu>
+        </queries>
+        <scripts>
+            <title>Scripts</title>
+            <para>
+                <link url="./create.sql">create.sql</link>
+            </para>
+            <para>
+                <link url="./insert.sql">insert.sql</link>
+            </para>
+        </scripts>
+        <conclussions>
+            <title>Závěr</title>
+                    <para>Ačkoliv semestrální práci odevzdávám, a celkově předmětem procházím, již podruhé, odnáším si z obojího výrazně lepší pochopení probíraných konceptů a vztahů mezi nimi, než jak tomu bylo během distanční výuky. </para>
+                    <para></para>
+                    <para>Původní práce byla vytvořena pro Oracle RDBMS a bylo tedy potřeba některé její části předělat. Konkrétně se jedná o nový insert script, create script, relační schéma a několik změn v dotazech.</para>
+                    <para>Také jsem opravil chyby a nejednoznačnosti v konceptuálním schématu a popisu a více poupravil některé dotazy.</para>
+                    <para></para>
+                    <para>Integritní omezení zapsaná mimo schéma nejsou kontrolovaná automaticky, ale žádná data v databázi je neporušují</para>
+                    <para></para>
+                    <para>Každou část práce jsem dělal svědomitě, podle svých nejlepších možností a tak, abych se ze své práce co nejvíce naučil a poučil.</para>
+                    <para></para>
+                    <para>Na semestrální práci jsem pracoval sám, pouze s podklady uvedenými ve zdrojích a za pomoci konzultací v rámci laboratoří.</para>
+        </conclussions>
+        <references>
+            <title>Zdroje</title>
+                    <para>### Znalosti a informace</para>
+                    <para>[Stránky předmětu BI-DBS](https://courses.fit.cvut.cz)</para>
+                    <para></para>
+                    <para>[Přednášky a cvičení](https://online.fit.cvut.cz/zaznam/B212/bi-dbs.21.html)</para>
+                    <para></para>
+                    <para>[Streamované přednášky z předchozích let](https://www.youtube.com/user/FITCTU/videos)</para>
+                    <para></para>
+                    <para>[Streamované prosemináře z předchozích let](https://www.youtube.com/channel/UCTwST8bYb0qxBaClWZcAgNA/videos)</para>
+                    <para></para>
+                    <para>[Vzorová semestrální práce pro PostgreSQL](https://users.fit.cvut.cz/~hunkajir/dbs2/main.xml)</para>
+                    <para></para>
+                    <para>### Data</para>
+                    <para>[Nástroj pro vygenerování některých dat](https://www.mockaroo.com/)</para>
+                    <para></para>
+                    <para>[Názvy her](https://www.kaggle.com/tamber/steam-video-games/data)</para>
+                    <para></para>
+                    <para>[Názvy ocenění](https://www.wikiwand.com/en/The_Game_Awards_2019#/Video_games)</para>
+                    <para></para>
+                    <para>[Jména vydavatelů](https://www.wikiwand.com/en/List_of_video_game_publishers)</para>
+                    <para></para>
+                    <para>[Jména distributorů](http://herniprumysl.cz/)</para>
+                    <para></para>
+                    <para>[Jména distributorů](https://www.wikiwand.com/en/Digital_distribution_of_video_games)</para>
+                    <para></para>
+                    <para>[Názvy veletrhů](https://www.wikiwand.com/en/List_of_gaming_conventions)</para>
+        </references>
+    </content>
+</sproject>

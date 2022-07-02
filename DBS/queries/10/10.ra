@@ -1,0 +1,9 @@
+{ zamestnanec <* pozice(nazev = 'programátor') }
+\
+{
+    { vazba_hra_platforma * platforma(nazev = 'PlayStation 5' ∨ nazev = 'PlayStation 4') [vazba_hra_platforma.id_hra = hra.id_hra> hra }
+        [hra.id_hra = vazba_hra_zamestnanec.id_hra]
+    vazba_hra_zamestnanec
+        [ vazba_hra_zamestnanec.id_zamestnanec = zamestnanec.id_zamestnanec>
+    { zamestnanec <* pozice(nazev = 'programátor') }
+}

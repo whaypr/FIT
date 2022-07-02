@@ -1,0 +1,7 @@
+{
+    { vazba_hra_zamestnanec * hra }(nazev = 'Dark Souls III')[id_zamestnanec]
+        \
+    { vazba_hra_zamestnanec * hra }(nazev != 'Dark Souls III')[id_zamestnanec]
+}
+    [vazba_hra_zamestnanec.id_zamestnanec = zamestnanec.id_zamestnanec>
+zamestnanec

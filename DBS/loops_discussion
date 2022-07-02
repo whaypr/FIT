@@ -1,0 +1,8 @@
+Všechny smyčky vznikají kvůli vztahu různých entit s entitou Adresa.
+
+Hra - Veletrh - Adresa - Pobocka - Zamestnanec - Hra: Smyčka je nutná, protože potřebujeme nezávisle na sobě evidovat adresu veletrhu i adresu pobočky.
+
+Hra - Veletrh - Adresa - Zamestnanec - Hra: Smyčka je nutná, protože potřebujeme nezávisle na sobě evidovat adresu veletrhu i adresu zaměstnance.
+
+Adresa - Pobocka - Zamestnanec - Adresa: Smyčka je nutná, protože z informace o adrese pobočky nezjistíme adresy zaměstnanců, kteří na pobočce pracují. Zaměstnanec pracuje na pobočce s nějakou adresou, ale sám může bydlet na jiné adrese.
+

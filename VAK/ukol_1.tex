@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+
+\title{BI-VAK - úkol 1}
+\author{Patrik Drbal}
+
+\begin{document}
+\maketitle
+
+\textbf {\\Zadání 8\\}
+Matematickou indukcí dokažte, že pro každé $n>1$ platí následující rovnost.
+\[ \sum_{i=1}^{n} i(i+1)(i+2) = \frac{n(n+1)(n+2)(n+3)}{4} \]
+
+\textbf{Základní krok pro $n=2$:}
+\[ \sum_{i=1}^{2} i(i+1)(i+2) = 1\cdot2\cdot3 + 2\cdot3\cdot4 = 30 \]
+\[ \frac{2(2+1)(2+2)(2+3)}{4} = 2\cdot3\cdot5 = 30 \]
+Pro $n=2$ rovnost platí.
+
+\bigbreak
+\textbf{Indukční krok pro $n>=2$:}
+\[
+\sum_{i=1}^{n} i(i+1)(i+2) = \frac{n(n+1)(n+2)(n+3)}{4} \Rightarrow
+\sum_{i=1}^{n+1} i(i+1)(i+2) = \frac{(n+1)(n+2)(n+3)(n+4)}{4}
+\]
+
+Upravíme sumu
+\[
+\sum_{i=1}^{n+1} i(i+1)(i+2) =
+(n+1)(n+2)(n+3) + \sum_{i=1}^{n} i(i+1)(i+2)
+\]
+
+Z indukčního předpokladu je tento výraz roven výrazu
+\[ (n+1)(n+2)(n+3) + \frac{n(n+1)(n+2)(n+3)}{4} \]
+
+Převedeme na společný jmenovatel
+\[ \frac{ n(n+1)(n+2)(n+3) + 4(n+1)(n+2)(n+3) }{4} \]
+
+A vytkneme $(n+1)(n+2)(n+3)$ a díky komutativitě násobení přesuneme doleva
+\[ \frac{ (n+1)(n+2)(n+3)(n+4) }{4} \]
+
+Postupnými ekvivalentními úpravami sumy na levé straně jsme získali výraz na pravé straně, čili indukční krok platí pro všechna $n>=2$.
+
+\bigbreak
+Rovnost, kterou jsme měli dokázat, je tedy korektní. $\blacksquare$
+
+
+\textbf {\\Bonusové zadání\\}
+\[ \frac{m}{n} - \frac{1}{\lceil \frac{n}{m} \rceil} \]
+
+Převedeme na společný jmenovatel
+\[ \frac{ m \cdot \lceil \frac{n}{m} \rceil - n }{ n \cdot \lceil \frac{n}{m} \rceil } \]
+Výraz $m \cdot \lceil \frac{n}{m} \rceil$ je nanejvýš $n+m$, protože $\lceil \frac{n}{m} \rceil = \frac{k}{m}$, kde $k >= n$ je nejbližší takové, že $m \mid k$. Čili $m \cdot \frac{k}{m} = k$, kde $k$ je nanejvýš $n+m$.
+
+Tedy výraz výše je roven výrazu
+\[
+\frac{ n+m-n }{ n \cdot \lceil \frac{n}{m} \rceil } =
+\frac{ m }{ n \cdot \lceil \frac{n}{m} \rceil }
+\]
+
+A protože $\lceil \frac{n}{m} \rceil >= 2$ (plyne z předpokladu $1<=m<n$), platí
+\[
+\frac{ m }{ n \cdot \lceil \frac{n}{m} \rceil } <
+\frac{m}{n}
+\]
+
+Tedy po každé iteraci algoritmu se hodnota výrazu zmenší, a protože pracujeme pouze s kladnými celočíselnými čitateli a jmenovateli a každá iterace trvá konečný počet kroků, po konečném počtu iterací, které budou trvat konečný čas, se hodnota výrazu zmenší na nulu a v tomto okamžiku se algoritmus zastaví. $\blacksquare$
+
+\end{document}
